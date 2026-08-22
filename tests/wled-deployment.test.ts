@@ -54,6 +54,8 @@ describe("guarded WLED deployment contract", () => {
       "wled/cfg.json",
       "wled/ledmap.json",
       "wled/route-mapping-manifest.json",
+      "wled/one-panel-smoke-cfg.json",
+      "wled/firmware-build-receipt.json",
       "wled/deployment-manifest.json",
     ]);
     const config = JSON.parse(bundle.files.get("wled/cfg.json")!) as {
@@ -79,11 +81,22 @@ describe("guarded WLED deployment contract", () => {
       status: "mapping-ready-installation",
       mappingFingerprint: "bc5054d1",
       target: {
-        platformioEnvironment: "esp32dev",
+        platformioEnvironment: "orbital_esp32dev",
+        upstreamEnvironment: "esp32dev",
         wledCommit: "d9b9a846561227351ad929e3109781daadb7bed2",
+      },
+      firmware: {
+        receiptPath: "wled/firmware-build-receipt.json",
+        artifact: {
+          name: "wled-orbital-esp32dev.bin",
+          byteLength: 1107920,
+          sha256: "0468ee34c8b9578504c3f4a708421eaa7b70663b691d5df430f46ea009fdabd7",
+        },
       },
       sourceProject: { path: "sculpture.json" },
     });
+    expect(JSON.parse(bundle.files.get("wled/one-panel-smoke-cfg.json")!))
+      .toMatchObject({ hw: { led: { total: 64, maxpwr: 1000 } } });
     expect(() => validateWledDeploymentBundle(
       bundle.manifestBytes,
       fileRecord(bundle.files, sculptureBytes),
@@ -163,6 +176,24 @@ describe("guarded WLED deployment contract", () => {
     expect(() => validateWledDeploymentBundle(
       bundle.manifestBytes,
       { ...files, "wled/ledmap.json": files["wled/ledmap.json"] + " " },
+      bundle.deploymentIdentity,
+    )).toThrow(/missing or stale/);
+    expect(() => validateWledDeploymentBundle(
+      bundle.manifestBytes,
+      {
+        ...files,
+        "wled/firmware-build-receipt.json":
+          files["wled/firmware-build-receipt.json"] + " ",
+      },
+      bundle.deploymentIdentity,
+    )).toThrow(/missing or stale/);
+    expect(() => validateWledDeploymentBundle(
+      bundle.manifestBytes,
+      {
+        ...files,
+        "wled/one-panel-smoke-cfg.json":
+          files["wled/one-panel-smoke-cfg.json"] + " ",
+      },
       bundle.deploymentIdentity,
     )).toThrow(/missing or stale/);
     expect(() => validateWledDeploymentBundle(

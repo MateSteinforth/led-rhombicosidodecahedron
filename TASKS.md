@@ -66,12 +66,6 @@ then prove static address and RGB parity on the physical 41-panel sculpture.
 - Acceptance: indices that differ above bit 15 produce different identities;
   compatibility behavior is tested and documented.
 
-### `FIRM-011` Build and deploy the minimum pinned WLED target
-
-- Acceptance: reproducible pinned firmware, exact bus fragment and ledmap,
-  non-secret procedure, and one fused-panel smoke test.
-- Depends on: `WIRE-012` and the operator-approved `CAL-010` profile facts.
-
 ### `DIAG-010` Deliver deterministic hardware diagnostic frames
 
 - Acceptance: frames identify output, panel, local coordinate, logical and
@@ -128,6 +122,21 @@ No tasks.
   transport decisions.
 
 ## Human Review
+
+### `FIRM-011` Flash and smoke-test the minimum pinned WLED target — P1
+
+- Software ready: off-main build branch `generate/wled-firmware` at `8089c79`
+  reproducibly emits the 1,107,920-byte binary with SHA-256
+  `0468ee34c8b9578504c3f4a708421eaa7b70663b691d5df430f46ea009fdabd7`.
+  The guarded installation identity is
+  `899f7775e278bd17bf10584c652a32e729076410f9a72414591dfb7e8ccce579`.
+- Main contract owner: `codex/firm-011-esp32-deployment` in
+  `/tmp/led-rhombo-firm-011`. The binary remains off-main.
+- Acceptance remaining: flash one real ESP32-DevKitC V4; smoke-test one fused
+  64-pixel panel through the level shifter with the 1,000 mA configuration;
+  record the board, panel, fuse, supply limit, colors, and result; install the
+  exact full ledmap and bus configuration only with LED power disconnected.
+- Do not energize the complete sculpture. `PWR-010` remains separate.
 
 ### `HR-006` Physically review representative Manifold parts
 
