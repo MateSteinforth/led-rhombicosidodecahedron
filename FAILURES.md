@@ -552,3 +552,20 @@ Copy this section for new entries and replace `NNN` with the next identifier.
 - **Evidence:** `tests/json-response.test.ts` and
   `tests/browser/json-response.spec.ts`.
 - **Status:** Resolved.
+
+### F-030 — System Python could not create the firmware build environment
+
+- **Date:** 2026-08-22
+- **Context:** First pinned WLED firmware build on the Codex Linux host.
+- **Symptom:** `python3 -m venv` stopped because Debian's separate
+  `python3-venv` package and `ensurepip` were unavailable.
+- **Cause:** The generation script assumed the system Python included optional
+  virtual-environment bootstrap components.
+- **Correction:** Use a hash-pinned PyPA pip zipapp to install WLED's exact
+  requirements into an ignored repository-local package directory, then run
+  PlatformIO with an explicit `PYTHONPATH`.
+- **Prevention:** Generation scripts must not require `sudo`, system package
+  installation, or mutation of the user's Python environment.
+- **Evidence:** `scripts/build-wled-firmware.sh` validates the pip zipapp before
+  local installation and compilation.
+- **Status:** Resolved.

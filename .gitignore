@@ -12,6 +12,10 @@
 *~
 .DS_Store
 node_modules/
+.firmware-tools/
+.firmware-python/
+.firmware-uv/
+build/firmware/
 dist/
 coverage/
 playwright-report/
