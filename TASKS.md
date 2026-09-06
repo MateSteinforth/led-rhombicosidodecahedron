@@ -1,11 +1,12 @@
 # Project task board
 
-Last reconciled: 2026-09-05
+Last reconciled: 2026-09-06
 Integration baseline: `main`, including the unified UI, Manifold-only
 fabrication, checked WLED simulator runtime, and Schema 2-only mapping path.
 
-Current milestone: deliver one complete package with a unified external-frame
-simulator and TouchDesigner DDP input.
+Current milestone: plan automatic discovery and playback for several sculptures
+on the operator's GL.iNet Slate Plus network. MadMapper show organization is
+still under discussion; implementation has not started.
 
 ## Control rules
 
@@ -30,6 +31,37 @@ simulator and TouchDesigner DDP input.
    as separate tasks.
 
 ## Backlog
+
+### `P1 · NET-034` Discover and pair several sculptures
+
+- Scope: desktop network discovery, unique device identity, Devices panel, durable project association, and migration from the fixed hostname.
+- Acceptance: two devices appear automatically on the Slate Plus; pairing survives IP changes and restart; discovery does not write calibration.
+- Plan and file boundaries: [multi-sculpture plan](docs/MULTI_SCULPTURE_PLAN.md#net-034-discover-and-pair-device-identities).
+
+### `P1 · NET-035` Change sculpture Wi-Fi without reflashing
+
+- Scope: separate Wi-Fi provisioning, saved network profiles, USB recovery, and tested recovery-hotspot instructions. Coordinate with FIRM-018.
+- Acceptance: move a controller to the private network without its old password; retain map, GPIOs, presets, and device identity.
+- Plan: [network recovery](docs/MULTI_SCULPTURE_PLAN.md#net-035-change-wi-fi-and-recover-devices).
+
+### `P1 · LIVE-036` Restore independent sculpture playback sessions
+
+- Dependency: NET-034 device/project identity. Scope: saved show assignments, independent streams and retries, automatic paired takeover, and native fallback.
+- Acceptance: two or more sculptures resume without retargeting on selection; loss of one device or source does not stall the others.
+- Plan: [playback sessions](docs/MULTI_SCULPTURE_PLAN.md#live-036-independent-playback-sessions-and-automatic-takeover).
+
+### `P1 · MAD-037` Define and implement the multi-sculpture MadMapper patch
+
+- Decision pending: shared content, separate content, or one spatial composition. Recommendation: one named group and stable universe allocation per sculpture.
+- Scope after discussion: show export, independent input assembly, versioned logical addressing, and explicit legacy physical-export migration.
+- Acceptance: two different outputs, stable ranges while offline, restart, and per-device calibration parity.
+- Plan: [MadMapper options](docs/MULTI_SCULPTURE_PLAN.md#mad-037-show-level-patch-and-input-routing--discussion-required).
+
+### `P2 · AUDIO-038` Add local microphone-driven standalone playback
+
+- Scope: select microphone and compatible pins, verify firmware, boot playback, and DDP-to-audio fallback. No hardware or firmware selection yet.
+- Acceptance: power-only operation starts audio-reactive playback and restores it after laptop or network loss.
+- Plan: [microphone phase](docs/MULTI_SCULPTURE_PLAN.md#audio-038-standalone-microphone-response).
 
 ### `P1 · FIRM-018` Recover USB Improv setup without an application restart
 
@@ -463,6 +495,15 @@ No tasks.
 ## In Progress
 
 ## Ready to Merge
+
+### `P1 · PLAN-033` Plan portable multi-sculpture operation
+
+- Owner: Codex; branch `codex/multi-sculpture-plan`; worktree `/tmp/loo-ume-multi-sculpture-plan`.
+- Scope: documentation only. Write discovery, identity, playback, recovery, and MadMapper milestones with router/laptop instructions.
+- Files: `docs/MULTI_SCULPTURE_PLAN.md`, `docs/ROADMAP.md`, `TASKS.md`.
+- Plan: check router documentation and current single-device boundaries; write phased acceptance criteria and unresolved MadMapper choices; inspect links and diff, then commit and push for review.
+- Acceptance: clear current/planned distinction, repeatable field setup, calibration preservation, and no implied implementation or router configuration.
+- Delivery: documented the Slate Plus setup and laptop connection, five implementation slices, field checks, and unresolved MadMapper choices. Documentation/link/diff inspection only; no application code changed.
 
 ## Done (2026-09-06 hardware-confirmed integration)
 

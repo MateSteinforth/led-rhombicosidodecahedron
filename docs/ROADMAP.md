@@ -34,8 +34,12 @@ MadMapper Art-Net or TouchDesigner DDP
   -> WLAN DDP to the configured sculpture
 ```
 
-`TASKS.md` has no current feature backlog. Start the next milestone only after
-an operator supplies a product requirement and acceptance check.
+The next operator-requested milestone is automatic discovery and playback for
+several sculptures on the existing GL.iNet GL-A1300 Slate Plus. See
+[the multi-sculpture plan](MULTI_SCULPTURE_PLAN.md) for router/laptop setup,
+device identity, recovery, independent streams, and acceptance checks.
+MadMapper show organization remains under discussion. Microphone-driven local
+playback is the longer-term requirement and needs new hardware/firmware evidence.
 
 Electrical design and approval are external operator responsibilities. The
 repository records WLED operating values but does not gate software work on an
