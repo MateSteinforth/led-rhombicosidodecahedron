@@ -41,6 +41,7 @@ import {
   type ApplicationUpdateHandler,
 } from "./application-update-handler.ts";
 import type { Esp32ReconnectAuthorizationHandler } from "./esp32-reconnect-authorization-handler.ts";
+import { createSculptureDevicesHandler } from "./sculpture-devices-handler.ts";
 
 const CONTENT_TYPES: Readonly<Record<string, string>> = Object.freeze({
   ".css": "text/css; charset=utf-8",
@@ -72,6 +73,7 @@ export interface LocalEditorServerOptions {
   artNetPreviewHandler?: ArtNetPreviewHandler;
   ddpPreviewHandler?: DdpPreviewHandler;
   esp32ReconnectAuthorizationHandler?: Esp32ReconnectAuthorizationHandler;
+  sculptureDeviceRegistryPath?: string;
   wifiCredentialsHandler?: WifiCredentialsHandler;
   applicationUpdateHandler?: ApplicationUpdateHandler;
   onApplicationUpdateApplied?: () => void;
@@ -233,6 +235,11 @@ export async function startLocalEditorServer(
   const firmwareHandler =
     options.firmwareHandler ?? createEsp32FirmwareHandler({ rootDirectory });
   const deviceHandler = options.deviceHandler ?? createEsp32DeviceHandler();
+  const sculptureDevicesHandler = createSculptureDevicesHandler({
+    registryPath:
+      options.sculptureDeviceRegistryPath ??
+      resolve(rootDirectory, ".tools/sculpture-devices.json"),
+  });
   const projectLibraryHandler =
     options.projectLibraryHandler ??
     createProjectLibraryHandler({ rootDirectory });
@@ -260,6 +267,7 @@ export async function startLocalEditorServer(
       if (await projectLibraryHandler.handle(request, response)) return;
       if (await firmwareHandler.handle(request, response)) return;
       if (await deviceHandler.handle(request, response)) return;
+      if (await sculptureDevicesHandler.handle(request, response)) return;
       if (await artNetPreviewHandler.handle(request, response)) return;
       if (await ddpPreviewHandler.handle(request, response)) return;
       if (
@@ -317,6 +325,7 @@ export async function startLocalEditorServer(
         });
         await pipelineHandler.close(gracePeriodMs);
         deviceHandler.close();
+        sculptureDevicesHandler.close();
         await artNetPreviewHandler.close();
         await ddpPreviewHandler.close();
         let timer: ReturnType<typeof setTimeout> | undefined;

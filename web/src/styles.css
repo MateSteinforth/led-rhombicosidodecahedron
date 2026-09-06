@@ -1043,6 +1043,12 @@ input[type="range"] {
 }
 
 .action-menu summary::-webkit-details-marker,
+.sculpture-device-card {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  overflow-wrap: anywhere;
+}
+
 .compact-menu summary::-webkit-details-marker {
   display: none;
 }

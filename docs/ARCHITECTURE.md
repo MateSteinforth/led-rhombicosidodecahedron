@@ -355,6 +355,25 @@ and publishes the completed directory atomically.
 
 ## Simulator-to-hardware boundary
 
+The first multi-device slice adds a read-only discovery plane. The Node service
+browses `_wled._tcp.local`, resolves bounded PTR/SRV/A records, and verifies
+private on-subnet candidates through bounded `/json/info` requests. Each scan
+uses fresh sockets and records, so DHCP changes do not inherit a stale service
+cache. DNS names and TXT records are hints; validated WLED JSON supplies the MAC.
+Repeated MACs at different addresses are conflicts, not selectable pairings.
+Manual IP lookup uses the same identity checks when multicast is unavailable.
+
+`SculptureDevices.ts` shows online and paired offline devices. The local registry
+stores project ID/name, mapping fingerprint, and the address used at pairing.
+Pairing rechecks MAC before an atomic local save. Electron stores this registry
+in user data; Vite and checkout servers use ignored `.tools/sculpture-devices.json`.
+This registry stores no credentials and does not authorize output or contain
+the saved project itself. It is separate from the legacy fixed-name reconnect
+and startup ZIP. Automatic session migration and simultaneous playback remain
+planned; discovery never calls that reconnect path or writes WLED settings.
+See [network review](SCULPTURE_NETWORK_REVIEW.md) and
+[multi-sculpture plan](MULTI_SCULPTURE_PLAN.md).
+
 The browser proves a logical-to-physical permutation in memory. The
 receipt-bound browser flash, Improv setup, one-panel smoke test, and three-panel
 DDP/preset/reconnect/power-cycle path have physical evidence. They do not prove

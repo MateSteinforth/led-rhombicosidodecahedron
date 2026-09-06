@@ -8,6 +8,8 @@ import { createProjectLibraryHandler } from "./project-library-handler.ts";
 import { createArtNetPreviewHandler } from "./artnet-preview-handler.ts";
 import { createDdpPreviewHandler } from "./ddp-preview-handler.ts";
 import { createApplicationUpdateHandler } from "./application-update-handler.ts";
+import { createSculptureDevicesHandler } from "./sculpture-devices-handler.ts";
+import { resolve } from "node:path";
 
 /** Local-only Vite adapter for the shared bounded editor pipeline handler. */
 export function editorPipelinePlugin(): Plugin {
@@ -17,6 +19,9 @@ export function editorPipelinePlugin(): Plugin {
     configureServer(server) {
       handler = createEditorPipelineHandler({ rootDirectory: process.cwd() });
       const deviceHandler = createEsp32DeviceHandler();
+      const sculptureDevicesHandler = createSculptureDevicesHandler({
+        registryPath: resolve(process.cwd(), ".tools/sculpture-devices.json"),
+      });
       const projectLibraryHandler = createProjectLibraryHandler({
         rootDirectory: process.cwd(),
         allowNonLoopbackHost: process.env.LOO_UME_PROJECT_LIBRARY_LAN === "1",
@@ -30,6 +35,7 @@ export function editorPipelinePlugin(): Plugin {
         void (async () => {
           if (await projectLibraryHandler.handle(request, response)) return;
           if (await deviceHandler.handle(request, response)) return;
+          if (await sculptureDevicesHandler.handle(request, response)) return;
           if (await artNetPreviewHandler.handle(request, response)) return;
           if (await ddpPreviewHandler.handle(request, response)) return;
           if (await applicationUpdateHandler.handle(request, response)) return;
@@ -41,6 +47,7 @@ export function editorPipelinePlugin(): Plugin {
       server.httpServer?.once("close", () => {
         void handler?.then((activeHandler) => activeHandler.close());
         deviceHandler.close();
+        sculptureDevicesHandler.close();
         void artNetPreviewHandler.close();
         void ddpPreviewHandler.close();
       });

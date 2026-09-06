@@ -67,12 +67,14 @@
     "fflate": "^0.8.3",
     "improv-wifi-serial-sdk": "2.8.1",
     "manifold-3d": "3.5.1",
+    "multicast-dns": "7.2.5",
     "spark-md5": "3.0.2",
     "three": "^0.179.1"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@playwright/test": "^1.62.1",
+    "@types/multicast-dns": "7.2.4",
     "@types/node": "^22.15.30",
     "@types/semver": "7.8.0",
     "@types/spark-md5": "3.0.5",

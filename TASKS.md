@@ -32,6 +32,11 @@ still under discussion; implementation has not started.
 
 ## Backlog
 
+### `P1 · COMP-039` Verify DOMRAEM without reflashing
+
+- Target: operator listing 1005012368842127. Verify exact hardware, installed firmware, four-output mapping, local microphone, recovery, and fallback. Keep vendor pins and board settings.
+- Priority: P1; first physical implementation target is ESP32-WROOM with INMP441 and AudioReactive build 2609061.
+
 ### `P1 · NET-034` Discover and pair several sculptures
 
 - Scope: desktop network discovery, unique device identity, Devices panel, durable project association, and migration from the fixed hostname.
@@ -60,7 +65,7 @@ still under discussion; implementation has not started.
 
 ### `P2 · AUDIO-038` Add local microphone-driven standalone playback
 
-- Scope: first verify local microphone, installed firmware, boot playback, and DDP-to-audio fallback on the requested DOMRAEM unit without reflashing; select microphone and compatible pins separately for managed boards.
+- Scope: first verify the available ESP32-WROOM with INMP441 and AudioReactive build 2609061, including boot playback and DDP-to-audio fallback. DOMRAEM remains the P1 compatibility target under COMP-039.
 - Acceptance: power-only operation starts audio-reactive playback and restores it after laptop or network loss.
 - Plan: [microphone phase](docs/MULTI_SCULPTURE_PLAN.md#audio-038-standalone-microphone-response).
 
@@ -496,6 +501,17 @@ No tasks.
 ## In Progress
 
 ## Ready to Merge
+
+### `P1 · NET-034A` Discover and pair controllers on the sculpture LAN
+
+- Owner: Codex; branch `codex/sculpture-discovery`; worktree `/tmp/loo-ume-sculpture-discovery`; base `545a383` includes PLAN-033.
+- Mode: STANDARD. First vertical slice: bounded read-only LAN discovery, durable MAC identity and current-project pairing, and Devices UI. Connection selection and concurrent multi-device playback remain subsequent slices; the existing single-device playback path remains separate.
+- Hardware: ESP32-WROOM, INMP441 (SD 32, WS 26, SCK 27), separate AudioReactive build 2609061, and available Slate Plus. Firmware branch remains separately owned; no flash or firmware replacement in this slice.
+- Plan: inspect pinned WLED discovery and current reconnect boundaries; implement discovery/registry and UI; verify identity, persistence, and zero discovery writes; prepare step-by-step physical review.
+- Likely conflicts: `scripts/local-editor-server.ts`, `electron/main.ts`, `vite.config.ts`, `web/src/main.ts`, `web/src/Esp32Setup.ts`, tests, and knowledge pages. New discovery modules own protocol and registry logic.
+- Acceptance: list two simulated WLED identities independently of names/IP order; preserve offline pairings across server restart; pairing stores a project fingerprint; reject identity drift before pairing; discovery sends no writes or frames; focused tests and production build pass. Hardware discovery and audio remain separately reported observations.
+- Verification: 62 focused protocol, registry, local-host, reconnect, and ESP32 tests passed; two browser journeys passed; TypeScript, scoped lint/format, WASM integrity, and desktop/Electron builds passed. The diff was reviewed locally. Full geometry verification was not repeated (F-174).
+- Delivery: [hardware review steps](docs/SCULPTURE_NETWORK_REVIEW.md). Real Slate Plus discovery, microphone behavior, IP-change timing, and two physical controllers remain unverified. Use a separate review profile to avoid the old reconnect path changing the native preset.
 
 ### `P1 · PLAN-033` Plan portable multi-sculpture operation
 

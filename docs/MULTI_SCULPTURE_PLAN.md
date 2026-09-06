@@ -1,8 +1,9 @@
 # Several sculptures on a portable network
 
-Status: proposed implementation plan, 2026-09-06. `TASKS.md` owns task status.
+Status: implementation started, 2026-09-06. `TASKS.md` owns task status.
 Router settings below are setup instructions, not a record of changes made.
-Multi-device discovery and playback are not implemented yet. The operator's
+NET-034A adds discovery and local project pairing on its implementation branch.
+Automatic and simultaneous multi-device playback remain planned. The operator's
 Slate Plus firmware version and this network setup still need a physical test.
 
 ## Intended experience
@@ -14,13 +15,24 @@ private network and opens LOO/UME, connected sculptures appear automatically.
 Previously paired sculptures with a valid saved assignment start mirroring.
 If the laptop or network disappears, they return to their local animation.
 
-The first milestones use the existing native standalone animation. Microphone
-hardware, audio firmware, and audio-reactive fallback are later work. Current
-firmware has functional standalone/DDP evidence but no microphone evidence.
+The first hardware target is the available ESP32-WROOM with INMP441 and the
+separate AudioReactive firmware build 2609061. Its proposed microphone pins are
+SD 32, WS 26, and SCK 27; they leave LED outputs 16, 17, 21, and 22 available.
+The firmware branch has build evidence; local audio and four-output stability
+still require physical evidence. DOMRAEM compatibility remains P1 (COMP-039).
 USB may be used for initial setup or recovery; routine performance uses power
 only. A fade between playback sources is desirable but needs its own test.
 
 ## Current implementation boundaries
+
+- `scripts/wled-discovery.ts` browses `_wled._tcp.local` on private IPv4
+  interfaces and verifies candidates through `/json/info`. The Devices panel
+  lists separate MAC identities, current addresses, and firmware builds.
+- `scripts/sculpture-devices-handler.ts` stores local project ID/name and mapping
+  fingerprint associations. These do not contain project ZIPs, authorize output,
+  or replace the old reconnect path. Discovery and pairing send no WLED writes.
+- [The first hardware review](SCULPTURE_NETWORK_REVIEW.md) tests discovery,
+  pairing, IP changes, and persistence before automatic playback is implemented.
 
 - `web/src/Esp32Setup.ts` discovers the fixed name `loo-ume.local` and checks
   configuration for one loaded project. Reconnect can update its map.
@@ -171,9 +183,9 @@ and [LAN, isolation, and DHCP](https://docs.gl-inet.com/router/en/4/interface_gu
    LOO/UME sends separate unicast DDP streams to the sculptures through the
    Slate Plus. The MadMapper patch design is still pending below.
 
-Joining the router today does not activate unimplemented multi-device behavior.
-For now, use the existing single-sculpture workflow. The router's **CLIENTS**
-list confirms network membership, not that a sculpture is paired in LOO/UME.
+On the NET-034A implementation branch, joining the router allows discovery and
+local pairing in **Devices on this network**. It does not start a new playback
+session. The router's **CLIENTS** list confirms network membership, not pairing.
 
 ## Implementation slices and acceptance
 
@@ -307,12 +319,11 @@ installed calibrations. Preserve the existing single-sculpture import path.
 
 ### AUDIO-038: standalone microphone response
 
-First confirm whether the requested DOMRAEM unit has a local microphone and
-compatible installed firmware, without reflashing. If present, test its local
-audio input against all four active LED outputs,
+First test the available ESP32-WROOM with INMP441 and AudioReactive build 2609061.
+Test its local audio input against all four active LED outputs,
 a saved audio-reactive boot effect, and return from DDP to microphone-driven
-playback. For managed boards, choose and test microphone hardware and compatible
-pins, then select and build suitable firmware in a separate task. Define
+playback. COMP-039 then checks the DOMRAEM unit's local audio capabilities on its
+installed firmware without reflashing. Define
 behavior during silence, microphone failure, and network reconnection. Network
 loss must not stop audio processing. The DOMRAEM variant is a compatibility
 target; no microphone pin assignment or firmware build is approved by this plan.

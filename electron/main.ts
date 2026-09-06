@@ -291,6 +291,7 @@ async function startDesktop(): Promise<void> {
       projectLibraryHandler,
       applicationUpdateHandler,
       esp32ReconnectAuthorizationHandler,
+      sculptureDeviceRegistryPath: join(userData, "sculpture-devices.json"),
       wifiCredentialsHandler,
     });
     editorUrl = localServer.url;

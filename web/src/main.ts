@@ -1,4 +1,5 @@
 import "./styles.css";
+import { createSculptureDevicesController } from "./SculptureDevices.ts";
 import { createUniformSphereMapping, validateMapping } from "./LedMapping";
 import {
   physicalAddressContractKey,
@@ -446,6 +447,10 @@ app.innerHTML = `
               <small>Flash the approved ESP32 firmware and copy the loaded simulator mapping and animation.</small>
             </div>
             <button id="open-esp32-setup" class="editor-button" type="button">Set up ESP32</button>
+            <details class="compact-menu" id="sculpture-devices">
+              <summary>Devices on this network</summary>
+              <div id="sculpture-devices-content" class="compact-menu__content"></div>
+            </details>
           </div>
         </section>
 
@@ -1444,6 +1449,19 @@ async function start(): Promise<void> {
         },
       };
     };
+
+    const closeDeviceDiscovery = createSculptureDevicesController({
+      root: query<HTMLElement>("#sculpture-devices-content"),
+      getProject: () =>
+        hardwareContract.readiness.mappingReady
+          ? {
+              projectId: editorDefinition.id,
+              projectName: editorDefinition.name,
+              fingerprint: hardwareContract.fingerprint,
+            }
+          : undefined,
+    });
+    window.addEventListener("pagehide", closeDeviceDiscovery, { once: true });
 
     const enableSimulatorLink = async (
       deviceUrl: URL,

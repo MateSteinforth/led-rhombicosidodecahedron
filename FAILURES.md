@@ -3092,6 +3092,16 @@ AppTranslocation/...` and `/bin/sh` reported that the file did not exist.
 - **Evidence:** LIVE-032 tests all eight orientations and all 41 panel blocks against straight row addressing.
 - **Status:** Resolved for the tested SQ-04 path. The four-quadrant standalone review confirmed the row/column reflection, and **Swap rows/columns** restored simulator parity while preserving red/white anchors. Keep the correction in the installed address transform. Do not change measured profile facts or poses from this evidence alone; verify the remaining panels and then DDP/MadMapper in sequence.
 
+### F-176 — A discovery error callback did not handle socket errors
+
+- **Date:** 2026-09-06
+- **Context:** NET-034A network discovery implementation review.
+- **Cause:** The inspected Bonjour wrapper supplied an error callback for responses but did not attach it to the underlying multicast socket's error event. A permission or bind failure could escape that callback. This was found in source review before hardware use.
+- **Correction:** Use pinned `multicast-dns` directly with an explicit error listener and bounded PTR/SRV/A discovery. Keep manual-IP and remembered-address checks active even when multicast fails.
+- **Prevention:** Verify socket error events and cleanup, not only a library's callback argument. Test a rejected multicast scan as well as an empty scan; manual recovery must survive both.
+- **Evidence:** `tests/wled-discovery.test.ts` injects a permission error; `tests/sculpture-devices-handler.test.ts` preserves manual discovery after a rejected browse.
+- **Status:** Software checks cover the correction; router and macOS multicast behavior still require hardware review. F-175 is reserved by the separately owned firmware task.
+
 ### F-174 — Integration verification must distinguish existing geometry failures
 
 - **Date:** 2026-09-06
