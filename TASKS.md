@@ -464,6 +464,20 @@ No tasks.
 
 ## Ready to Merge
 
+## Done (2026-09-06 hardware-confirmed integration)
+
+The operator confirmed that WLED effects and MadMapper mirroring work and
+authorized integration of LIVE-030/031/032 into `main`. Build 38 is the tested
+application. This is operator-reported functional evidence; the calibrated
+project remains on the operator's device and has not replaced repository demos.
+Earlier delivery and pending-review notes below describe the individual build
+history and are superseded by this integration approval.
+Integration checks: 618 tests passed and 15 failed in five unchanged geometry
+test files. The same geometry failures reproduced on unchanged `main` at
+`3c32370`; that baseline also had a launcher failure (608 passed, 16 failed).
+Both physical-review browser journeys, TypeScript, WASM integrity, asset
+generation, and the production build passed. Full `verify` is not green.
+
 ### `P1 · LIVE-031` Rotate a physical red calibration gradient
 
 - Owner: GPT-6 Astra; branch `codex/review-gradient`; worktree `/tmp/loo-ume-review-gradient`.
@@ -489,8 +503,6 @@ No tasks.
 - Mac verification: [build 35](https://github.com/MateSteinforth/LOO-UME/actions/runs/33982160555) passed packaging and application checks.
 - Review package: [Apple Silicon DMG](https://github.com/MateSteinforth/LOO-UME/releases/download/electron-review-35/LOO-UME-Electron-arm64.dmg), built from `40f2b548f031457b658b3d54b182125afe4699df`.
 
-## Human Review
-
 ### `P1 · LIVE-032` Verify the complete logical-to-physical output path
 
 - Owner: GPT-6 Astra; branch `codex/output-parity`; worktree `/tmp/loo-ume-output-parity`.
@@ -500,8 +512,8 @@ No tasks.
 - Evidence received: operator project, hardware contract, and ESP32 ledmap. The canonical project reproduces fingerprint `524500f5`, the saved route, and PC-03/PC-08/SQ-16 poses and transforms. Operator GPIOs are 16/17/21/22; old notes still list 18/19.
 - Physical report: streamed WLED effects and standalone effects look identically wrong relative to the simulator. SQ-01 through SQ-05 appear 90 degrees right from the LED side; PC-03 appears 90 left, PC-08 90 right, SQ-16 180. Earlier physical review showed no defect. No compensating rotations were added.
 - Verification: 58 focused tests passed, including all 41 panel blocks through the exported map and eight distinct review orientations. Both browser journeys passed without retries after assertions included gamma correction and controller mapping. TypeScript and scoped lint passed. Independent read-only review confirmed the common mapping path and symmetric-pattern weakness.
-- Remaining: complete the same standalone-first comparison for the other panel slots, then check LOO/UME DDP and MadMapper in that order. The SQ-04 result confirms the review control, but it does not by itself prove complete 41-panel electrical parity.
-- Delivery: software changes are saved for review; the complete physical-output task remains in Human Review.
+- Result: on 2026-09-06, the operator confirmed that everything works after the WLED and MadMapper checks. No further code change was needed after build 38. The exact MadMapper-side action was not reported.
+- Delivery: operator authorized integration into `main` on 2026-09-06.
 - Hardware test order: operator requires standalone parity first, then LOO/UME DDP, then MadMapper. Start with a direct WLED JSON four-corner test on SQ-04, without changing the map. Logical 31/32/311/312 map to physical 0/7/56/63. See `docs/LED_MAPPING.md`.
 - Review build: Mac build 37 (`33985685786`) packaged and verified the application from `cd5b6d7`; its direct DMG is published under `electron-review-37`. This does not establish hardware parity.
 - Quadrant review build: Mac build 38 (`33987257272`) passed packaging and DMG launch verification from `c2641b58e49e6d71c790f75d46160edd4f6c7069`. The ARM64 DMG is published under `electron-review-38` and includes four RGBW quadrants, Swap rows/columns, and standalone-first review.
@@ -517,9 +529,9 @@ No tasks.
   order, and LED address order match the simulator.
 - Dependency: use the FIRM-015 ESP32 configuration now integrated in `main`.
 - FIRM-019 corrected output memory allocation. The operator confirmed all four outputs on GPIOs 16, 17, 21, and 22 on 2026-09-05.
-- Read-back confirms the same four configured outputs and a complete 2,624-LED segment. Complete sculpture address parity remains unverified.
-- Remaining risk: physical LED reception and complete address parity are not
-  yet verified.
+- Read-back confirms the same four configured outputs and a complete 2,624-LED segment. On 2026-09-06 the operator confirmed functional output after calibration, including WLED effects and MadMapper mirroring. This closes the operator acceptance task; no automated exhaustive pixel measurement was supplied.
+
+## Human Review
 
 ## Blocked
 

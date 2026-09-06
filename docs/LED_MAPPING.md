@@ -318,6 +318,15 @@ standalone WLED first, then LOO/UME DDP, then external input. An unchanged
 export or matching fingerprint proves software consistency, not installed
 pixel order.
 
+On 2026-09-06 the operator confirmed working WLED effects and MadMapper
+mirroring with review build 38 and authorized integration into `main`.
+The corrected project and installed calibration remain operator-owned; this
+confirmation does not replace the repository demo with those calibrated values.
+MadMapper fixtures currently use physical wire addresses. After calibration,
+export matching fixtures again if the existing MadMapper patch uses the old
+address mapping. The exact MadMapper-side action in this successful test was
+not reported.
+
 For the specific project with map fingerprint `524500f5`, a direct JSON test
 can light the four corners of SQ-04. Quit LOO/UME and stop other senders first.
 This command uses WLED's individual-pixel JSON path with realtime disabled;

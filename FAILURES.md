@@ -3078,7 +3078,7 @@ AppTranslocation/...` and `/bin/sh` reported that the file did not exist.
 - **Correction:** Send logical DDP for every source and enable WLED mapping. Encode physical diagnostic frames through the current map before transmission. Migrate only the legacy realtime setting after validating the remaining device contract, then verify read-back.
 - **Prevention:** Test physical output after the controller mapping step, including distinct pixel values. A uniform frame or an outgoing-packet check cannot prove address parity.
 - **Evidence:** LIVE-032 browser checks emulate the pinned WLED `show()` mapping policy for Art-Net, DDP, and review output.
-- **Status:** Software checks passed. This does not explain identical errors in streamed WLED effects and standalone effects.
+- **Status:** Software checks passed, and the operator confirmed working WLED effects and MadMapper mirroring on 2026-09-06 with build 38 after address calibration. The earlier identical native/streamed error also required the separate review correction in F-173.
 
 ### F-173 — A symmetric review gradient could miss a row/column swap
 
@@ -3091,3 +3091,11 @@ AppTranslocation/...` and `/bin/sh` reported that the file did not exist.
 - **Physical evidence:** The SQ-04 direct JSON corner test retained red at upper right/DIN and white at lower left/DOUT but exchanged green and blue against the saved pose reference. The old symmetric diagonal cannot detect this reflection. Verify interior wire addresses and the profile reference view before changing the global measured pixel-order contract.
 - **Evidence:** LIVE-032 tests all eight orientations and all 41 panel blocks against straight row addressing.
 - **Status:** Resolved for the tested SQ-04 path. The four-quadrant standalone review confirmed the row/column reflection, and **Swap rows/columns** restored simulator parity while preserving red/white anchors. Keep the correction in the installed address transform. Do not change measured profile facts or poses from this evidence alone; verify the remaining panels and then DDP/MadMapper in sequence.
+
+### F-174 — Integration verification must distinguish existing geometry failures
+
+- **Date:** 2026-09-06
+- **Evidence:** LIVE-030/031/032 integration passed 618 tests but failed 15 tests in `cuboctahedron-e2e`, `panel-outline-boundary`, `rhombicosidodecahedron-auto-e2e`, `structural-pipeline`, and `structural-solids`. These test files, their `src/` implementation, and the catalog were unchanged by the integration.
+- **Baseline:** The same geometry failures reproduced on unchanged `main` at `3c32370`; its full run passed 608 tests and failed 16, including one additional launcher failure.
+- **Prevention:** Compare failures on the unchanged integration base before attributing them to a task. Report full verification as failed even when focused checks and the production build pass. Do not change proven PCB or geometry facts merely to satisfy stale expectations.
+- **Status:** Existing geometry failures remain open for a separate investigation. Physical-review browser tests, TypeScript, WASM integrity, and the integration production build passed.
