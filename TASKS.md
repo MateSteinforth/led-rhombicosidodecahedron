@@ -462,7 +462,22 @@ No tasks.
 
 ## In Progress
 
+No tasks.
+
 ## Ready to Merge
+
+### `P1 · FIRM-020` Build AudioReactive firmware with four LED outputs
+
+- Owner: GPT-6 Astra; branch `codex/firmware-audioreactive`; worktree `/tmp/loo-ume-firmware-audioreactive`.
+- Scope: build a separate AudioReactive variant from the pinned WLED source. Retain Improv and the 128-symbol RMT correction.
+- Result: build `2609061` produced application and complete USB images. Both match the separate receipt under `firmware/audio-reactive`.
+- Acceptance: produce application and complete USB images with an exact receipt. Keep the existing application firmware selection unchanged.
+- Assumption: use an INMP441 I2S microphone. Document free microphone GPIOs separately from the four LED outputs.
+- Limits: this request authorizes a build. Device flashing, physical audio tests, and main integration remain separate actions.
+- Conflicts: firmware documentation and task records. Preserve the active review worktrees.
+- Verification: native compilation, ESP32 image checksum, receipt assertions, JavaScript syntax, formatting, and independent compiled-path review passed.
+- Delivery: `build/firmware-audioreactive-2609061` in the primary checkout preserves the package, images, receipt, compiler evidence, and build log.
+- Physical review: use INMP441 SD 32, WS 26, and SCK 27. Verify sound response and all four LED outputs before claiming physical stability.
 
 ## Done (2026-09-06 hardware-confirmed integration)
 

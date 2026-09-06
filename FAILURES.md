@@ -3099,3 +3099,12 @@ AppTranslocation/...` and `/bin/sh` reported that the file did not exist.
 - **Baseline:** The same geometry failures reproduced on unchanged `main` at `3c32370`; its full run passed 608 tests and failed 16, including one additional launcher failure.
 - **Prevention:** Compare failures on the unchanged integration base before attributing them to a task. Report full verification as failed even when focused checks and the production build pass. Do not change proven PCB or geometry facts merely to satisfy stale expectations.
 - **Status:** Existing geometry failures remain open for a separate investigation. Physical-review browser tests, TypeScript, WASM integrity, and the integration production build passed.
+
+### F-175 — Compilation database generation removed firmware evidence
+
+- **Date:** 2026-09-06
+- **Context:** FIRM-020 needed compiler flags and the final ELF for independent review.
+- **Cause:** PlatformIO's `compiledb` target removed the existing build files. A cached rebuild restored objects but omitted header dependency files.
+- **Correction:** Generate the compilation database before the final build. Use a fresh cache to restore missing compiler dependency evidence.
+- **Prevention:** Check the final ELF, dependency files, and image hashes after all build targets finish. Preserve the matching evidence before cleanup.
+- **Status:** The build procedure records the required order. Physical firmware tests remain separate from compiler evidence.

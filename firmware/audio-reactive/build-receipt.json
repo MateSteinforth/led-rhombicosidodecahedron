@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "1.2.0",
+  "status": "built-not-flashed",
+  "target": {
+    "board": "ESP32-DevKitC V4",
+    "module": "ESP32-WROOM-32E-N4",
+    "platformioEnvironment": "orbital_esp32dev",
+    "upstreamEnvironment": "esp32dev",
+    "wledCommit": "d9b9a846561227351ad929e3109781daadb7bed2",
+    "platformioVersion": "6.1.18",
+    "platformVersion": "2026.02.30",
+    "frameworkVersion": "3.3.7+sha.b3b492ff",
+    "toolchainVersion": "15.1.0+20250607",
+    "esptoolVersion": "5.1.2",
+    "capabilities": {
+      "serialProvisioning": "improv-v1",
+      "audioReactive": {
+        "usermod": "audioreactive",
+        "enabledByDefault": true,
+        "microphone": "INMP441",
+        "type": "generic-i2s",
+        "dataGpio": 32,
+        "wordSelectGpio": 26,
+        "clockGpio": 27,
+        "masterClockGpio": -1
+      }
+    },
+    "releaseName": "ESP32",
+    "buildId": 2609061
+  },
+  "inputs": {
+    "pipZipapp": {
+      "version": "26.2.1",
+      "sha256": "91d5fd9f6f25549fd839c60536c6f1b945316ce3588d34a605635b6071c91526"
+    },
+    "uvVersion": "0.12.5",
+    "platformioOverrideSha256": "9cea6317f15a2f96a4405d0fe26366d318f388c660b0491e2bdb9779850e29f2",
+    "upstreamRequirementsSha256": "9226eadd19806ad6b644685e5182a47dfd8ff37f19f6d18429d2930270a37ce7",
+    "wledBuildNumber": {
+      "header": "wled00/wled.h",
+      "originalHeaderSha256": "e75b06ba221bade02978200bda453e45054b34e45300aa5a83eead35ae336ca9",
+      "patchedHeaderSha256": "4585459bee0d8c14d530143a1cbceb0be4d9f4ed4556fa4a0d8904073dab9955",
+      "patchScript": "firmware/audio-reactive/patch-build-id.mjs",
+      "patchScriptSha256": "1b6b623cac5d2c7a0d5c9d9635f23efca40130ccfab926dd2f4b8d2767190170"
+    },
+    "neopixelBus": {
+      "commit": "76afe832f74b0738a3fa1bba0caf389ade9e7693",
+      "header": "src/internal/methods/ESP/ESP32/NeoEsp32RmtXMethod.h",
+      "originalHeaderSha256": "873f04f31542043993106dddc483e42adbc7d30cb12198645354c46dbf097ee6",
+      "patchedHeaderSha256": "01189d3266629a6a72e2928faa56977b7536d7cf596f927c7355440036b658f7",
+      "patchScript": "firmware/patch-rmt.mjs",
+      "patchScriptSha256": "9923bf5723c4bf25104d9b4542cceb293226f170afa9bc4f18f86d370f4b7cb5",
+      "rmtSymbolsPerOutput": 128,
+      "classicEsp32SymbolCapacity": 512,
+      "maximumRmtOutputs": 4
+    },
+    "sourceArchiveSha256": "42f12c1b286030301dde811079386e99cbe6590989c7b45daa323bb0495fa8d1",
+    "audioReactive": {
+      "source": "usermods/audioreactive/audio_reactive.cpp",
+      "sourceSha256": "aee744f400c9c96f2863ef87ce07be8b10d4df959a7a1be0dc2d074105a799ca",
+      "fftVersion": "2.0.1",
+      "compileCommandsSha256": "03e9a0fd7104eb5db5cfc7c565a95c14b22eba2329e93a215c77ee2e1da9a2ac",
+      "elfSha256": "43afe3290c10891fa944760d394ca5a8026cf4859d190215b99d206a5e8feb61"
+    }
+  },
+  "artifact": {
+    "name": "wled-audioreactive-rmt4-esp32.bin",
+    "byteLength": 1149520,
+    "sha256": "cf038e4d5c966704d4780fef31ca3e7dd0040d41cef81937864214c0d6507ce1"
+  },
+  "fullFlashArtifact": {
+    "name": "wled-audioreactive-rmt4-esp32-full-flash.bin",
+    "byteLength": 1215056,
+    "sha256": "1eff1b4c332b7a700ced61e061bf11cd3fc101efcde4f4ad69f800057f8c705d",
+    "flashAddress": 0,
+    "eraseAll": true,
+    "flashMode": "dio",
+    "flashFrequency": "40m",
+    "flashSize": "4MB"
+  }
+}

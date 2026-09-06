@@ -1,5 +1,7 @@
 # ESP32 setup and maintenance
 
+For the separate AudioReactive build with four-output support, see [audio-reactive/README.md](audio-reactive/README.md).
+
 FIRM-011 selects an ESP32-DevKitC V4 with an ESP32-WROOM-32E-N4 module. The
 firmware uses WLED commit `d9b9a846561227351ad929e3109781daadb7bed2`. The
 reviewed target is `orbital_esp32dev`, based on upstream `esp32dev`. The binary
