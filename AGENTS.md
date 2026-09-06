@@ -155,14 +155,15 @@ Historical Schema 1 inputs are available only through Git history.
   changes; avoid chat-history handovers as the only record.
 - Keep the root `README.md` for application users. Put checkout, build, test,
   release, architecture, and repository guidance in `docs/DEVELOPMENT.md`.
-- Use ASD-STE100 simplified technical English for all operator-facing updates,
-  questions, and handoffs.
+- Use ASD-STE100 Simplified Technical English, Issue 9, for all new or changed
+  prose, including comments and task records. Use short sentences and American
+  English. Do not rewrite unrelated text or claim verified compliance.
 - Record each reusable failure and its verified solution in `FAILURES.md`.
   Promote recurring prevention rules into `AGENTS.md` or the relevant knowledge
   page. Reuse the recorded solution; do not repeat the failed discovery process.
 - Treat delivery cleanup as part of every successfully completed task; the
   operator must not need to request it again. After a scoped change is clean and
-  verified, commit it on its task branch, push that branch when permitted, and
+  verified, commit it on its task branch, push that branch when explicitly authorized, and
   move the task to **Ready to Merge**. Do not merge or fast-forward into `main`
   without an explicit operator request. After an authorized integration push
   succeeds, remove any temporary task worktree, delete its merged local task
@@ -249,24 +250,43 @@ permissions to create a new namespace` even though approved shell commands
 
 ## Agentic workflow
 
+### Startup and work limits
+
+- Use FAST START for a scoped task in an existing repository. Read applicable
+  instructions, inspect Git status, and read only related files and tests.
+- Read task records when task state matters. Read architecture and failure
+  records when the affected subsystem needs that information.
+- Do a full bootstrap only on request, for a new repository, or when missing
+  state or conflicting instructions prevent safe work.
+- Reuse current evidence and valid plans. After compaction, continue from the
+  recorded state. Do not repeat completed analysis or checks without a reason.
+- Make the smallest complete change. Do not add unrelated improvements.
+  A completed part does not complete a request with remaining requirements.
+- Run fast format and lint checks, affected type checks, behavior tests, and
+  required integration checks. Expand checks only for changed behavior or risk.
+- Keep reports short. Record only useful durable information. Do not copy a
+  complete bootstrap document into this file.
+- Existing authorization remains valid within its scope. Implementation alone
+  does not authorize publication, external writes, production changes, or a
+  merge into `main`. Prepare the result before requesting missing authority.
+
 ### Shared repository and model routing
 
 - Assume that Codex, Grok, and other agents can work concurrently. Never
   discard unfamiliar changes or assume exclusive ownership of a branch,
   worktree, file, or remote ref.
-- Use `main` only as the integration baseline. Start every repository change
-  in a new task branch and worktree. Record that ownership and
-  likely file conflicts in `TASKS.md` before code changes start. Run npm, Git
-  writes, and tests with that worktree as the explicit working directory.
+- Use `main` only as the integration baseline. Use a task branch for changes.
+  Use a separate worktree when isolation prevents conflicts or the user requests it.
+  Record ownership and likely conflicts for substantial tasks in `TASKS.md`.
+  Run commands with the task worktree as the explicit working directory.
 - Never force-push, reset shared history, delete another agent's branch or
   worktree, or merge into `main` without explicit operator authorization.
-- Use GPT-5.6 Luna for bounded inspection, test execution, log review,
-  mechanical edits, and first-pass review. Use GPT-5.6 Terra for normal
-  implementation and medium-complexity debugging. Reserve GPT-5.6 Sol for
-  orchestration, architecture, hard debugging, high-risk refactors,
-  geometry, and final review where correctness needs it. Escalate from Luna to
-  Terra to Sol only when the task shows that the cheaper model is insufficient.
-  Do not use Sol for routine execution.
+- Use GPT-6 Astra as the primary agent when available. Astra can implement
+  directly. Use GPT-5.6 Sol as the fallback when Astra is unavailable.
+- Use GPT-5.6 Terra for independent implementation and GPT-5.6 Luna for bounded
+  tasks only when delegation reduces total work or gives useful review evidence.
+- Preserve the effective reasoning effort. Change runtime settings only when
+  authorized. Do not claim a model change without runtime confirmation.
 - Parallelize only independent seams. Do not assign concurrent edits to the
   same file or subsystem unless one orchestrator coordinates the overlap.
 - Use a separate review or test pass when the scope or risk justifies it.
@@ -279,13 +299,12 @@ permissions to create a new namespace` even though approved shell commands
 - **FAST** is the default for clear, low-risk work. Execute directly, do not add
   a critic or research agent by default, run only relevant checks, and update
   documentation only when durable behavior changes.
-- **STANDARD** is for a substantial normal feature. Use a brief plan, Terra for
-  implementation by default, Luna for bounded inspection or testing, and an
-  independent review or test pass when it adds useful evidence. Update
+- **STANDARD** is for a substantial normal feature. Use a brief plan and
+  independent work or review when it reduces time or risk. Update
   `TASKS.md` at meaningful state changes.
 - **QUALITY** is for architecture, high-risk changes, complex geometry,
-  ambiguous defects, major refactors, or repeated failed approaches. Use Sol
-  for orchestration and add a bounded critic, independent work, or broader
+  ambiguous defects, major refactors, or repeated failed approaches. Add
+  a bounded critic, independent work, or broader
   verification only when each item reduces a real risk.
 
 Escalate from FAST to STANDARD to QUALITY only because of demonstrated
@@ -297,9 +316,8 @@ An agent assigned as orchestrator owns the result end to end. It may divide the
 work, but it remains responsible for scope, architectural consistency,
 integration, verification, and the final report. Use this operating loop:
 
-1. **Orient.** Read this file, `docs/ARCHITECTURE.md`, `TASKS.md`, and
-   `FAILURES.md`, then the domain guide named at the top of this file. Inspect
-   `git status` and the relevant code before proposing changes. Treat existing
+1. **Orient.** Apply the startup rules above. Inspect `git status` and the
+   relevant code before changes. Treat existing
    worktree changes as user-owned unless the task proves otherwise.
 2. **Frame the outcome.** Turn the request into explicit acceptance criteria,
    identify the source-of-truth files and guardrails involved, choose the
