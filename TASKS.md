@@ -478,7 +478,7 @@ No tasks.
 - Verification: native compilation, ESP32 image checksum, receipt assertions, JavaScript syntax, formatting, and independent compiled-path review passed.
 - Delivery: `build/firmware-audioreactive-2609061` in the primary checkout preserves the package, images, receipt, compiler evidence, and build log.
 - Physical review: use INMP441 SD 32, WS 26, and SCK 27. Verify sound response and all four LED outputs before claiming physical stability.
-- Push: automatic approval review rejected the external write to `https://github.com/MateSteinforth/LOO-UME.git`. The build is complete locally; branch publication needs explicit approval.
+- Push: the operator approved branch publication on 2026-09-06. Commit `68e617f` was pushed to `codex/firmware-audioreactive` at `https://github.com/MateSteinforth/LOO-UME.git`. Main integration and physical tests remain pending.
 
 ## Done (2026-09-06 hardware-confirmed integration)
 
