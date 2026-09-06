@@ -38,6 +38,61 @@ only. A fade between playback sources is desirable but needs its own test.
   Several sculptures require input routing and per-sculpture assembly, not
   only a list of discovered IP addresses.
 
+## Existing WLED controllers without reflashing
+
+Support two setup paths: the project's managed firmware and **Connect existing
+WLED controller**. The existing-controller path must work without flashing.
+Read its identity, installed firmware, available effects, and configuration
+before offering changes. Back up configuration and presets locally. Preserve
+the manufacturer's output pins, relay, microphone, and board settings; never
+apply the prototype's GPIO layout as a default for another controller.
+
+The first requested commercial target is the **DOMRAEM ESP32 four-channel WLED
+controller with 16 A fuse, level shifter, and Sound-Sync**, from the operator's
+[AliExpress listing 1005012368842127](https://de.aliexpress.com/item/1005012368842127.html).
+The listing could not be fetched on 2026-09-06. Its selected variant, board
+revision, microphone, and installed firmware remain unverified. Record these
+from the delivered unit before assigning a supported device profile.
+The operator supplied the listing description: it advertises four channels,
+WLED Wi-Fi control, Sound-Sync, a 16 A fuse, and a level shifter. It does not
+explicitly specify a built-in microphone or the installed WLED version.
+
+A [related DOMRAEM family manual](https://www.domraem.ru/manuals/dom-wle-15-16-18p.html)
+covers DOM-WLE-15P/16P/18P, documents 2.4 GHz setup, and identifies a built-in
+microphone on the 18P. This does not establish which variant the listing sells.
+Its microphone settings use GPIO 21 and 26, which illustrates why the current
+prototype output assignments must not be copied to an unverified board.
+
+Check capabilities separately and show their status per device:
+
+| Capability | Required verification on the installed firmware |
+| --- | --- |
+| Discovery and pairing | Read WLED identity through JSON; discover despite default or duplicate names; allow manual IP entry |
+| Mirroring | Receive unicast DDP and test the assigned pixel count across all four outputs |
+| Standalone and streamed address parity | Upload, activate, and retain the generated ledmap; verify RGBW quadrants and Swap rows/columns in both playback paths |
+| Local audio at power-on | Confirm a local microphone and audio processing; save a supported boot preset and test with router and laptop off |
+| Automatic fallback | Stop DDP and confirm the saved local animation returns; repeat after restart |
+| Recovery without flashing | Test Wi-Fi settings and the unit's recovery hotspot; use USB Improv only when this hardware and firmware support it |
+
+WLED provides a [JSON API](https://kno.wled.ge/interfaces/json-api/) and
+[DDP reception](https://kno.wled.ge/interfaces/ddp/); test the vendor build
+rather than assuming it matches the pinned project firmware. Select presets
+from its reported effect catalogue. Keep its audio fallback preset when a
+mirror session starts. Do not require a firmware change for discovery; service
+advertisement changes may be considered only for the managed firmware path.
+
+Sound-Sync can receive audio from another device. It is not evidence of a local
+microphone. [WLED audio documentation](https://kno.wled.ge/advanced/audio-reactive/)
+distinguishes local inputs from network audio. A controller with no local audio
+can qualify for mirroring and ordinary standalone playback, but does not meet
+the full power-only audio requirement. If map upload is unavailable, laptop-side
+mapping alone does not fix standalone parity; report that limitation explicitly.
+
+NET-034 owns capability detection and device profiles; NET-035 owns recovery;
+LIVE-036 owns parity and fallback tests; AUDIO-038 owns local audio evidence.
+Acceptance includes one managed controller and the exact DOMRAEM unit on the
+same Slate Plus, with independent projects and no reflash of the DOMRAEM unit.
+
 ## Configure the GL.iNet GL-A1300 Slate Plus
 
 Use this as the dedicated local network at home and in the field. Internet is
@@ -127,7 +182,8 @@ list confirms network membership, not that a sculpture is paired in LOO/UME.
 Add a desktop discovery service and Devices panel. Prefer mDNS/DNS-SD browsing
 on the active sculpture-network interface; first inspect and test what the
 pinned WLED firmware actually advertises. Verify candidates through WLED JSON.
-If needed, add service advertisement in a separately receipted firmware change.
+If needed for managed boards, add service advertisement in a separately
+receipted firmware change. Existing-controller support must not require this.
 Provide manual IP entry when multicast discovery is blocked. Do not require
 GL.iNet administrator credentials, cloud access, or a router-specific API.
 
@@ -251,12 +307,15 @@ installed calibrations. Preserve the existing single-sculpture import path.
 
 ### AUDIO-038: standalone microphone response
 
-Choose and physically test microphone hardware and compatible controller pins
-against each supported LED output layout. Select and build firmware with local
-audio processing, a saved audio-reactive boot effect, and verified return from
-DDP to microphone-driven playback. Define behavior during silence, microphone
-failure, and network reconnection. Network loss must not stop audio processing.
-No microphone, pin assignment, or firmware variant is selected by this plan.
+First confirm whether the requested DOMRAEM unit has a local microphone and
+compatible installed firmware, without reflashing. If present, test its local
+audio input against all four active LED outputs,
+a saved audio-reactive boot effect, and return from DDP to microphone-driven
+playback. For managed boards, choose and test microphone hardware and compatible
+pins, then select and build suitable firmware in a separate task. Define
+behavior during silence, microphone failure, and network reconnection. Network
+loss must not stop audio processing. The DOMRAEM variant is a compatibility
+target; no microphone pin assignment or firmware build is approved by this plan.
 
 ## Field diagnosis and release checks
 

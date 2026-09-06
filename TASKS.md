@@ -35,6 +35,7 @@ still under discussion; implementation has not started.
 ### `P1 · NET-034` Discover and pair several sculptures
 
 - Scope: desktop network discovery, unique device identity, Devices panel, durable project association, and migration from the fixed hostname.
+- Compatibility: add an existing-WLED path with capability detection and preserved vendor settings; target the operator's DOMRAEM listing 1005012368842127 without reflashing. Exact unit revision and firmware need verification.
 - Acceptance: two devices appear automatically on the Slate Plus; pairing survives IP changes and restart; discovery does not write calibration.
 - Plan and file boundaries: [multi-sculpture plan](docs/MULTI_SCULPTURE_PLAN.md#net-034-discover-and-pair-device-identities).
 
@@ -59,7 +60,7 @@ still under discussion; implementation has not started.
 
 ### `P2 · AUDIO-038` Add local microphone-driven standalone playback
 
-- Scope: select microphone and compatible pins, verify firmware, boot playback, and DDP-to-audio fallback. No hardware or firmware selection yet.
+- Scope: first verify local microphone, installed firmware, boot playback, and DDP-to-audio fallback on the requested DOMRAEM unit without reflashing; select microphone and compatible pins separately for managed boards.
 - Acceptance: power-only operation starts audio-reactive playback and restores it after laptop or network loss.
 - Plan: [microphone phase](docs/MULTI_SCULPTURE_PLAN.md#audio-038-standalone-microphone-response).
 
@@ -504,6 +505,7 @@ No tasks.
 - Plan: check router documentation and current single-device boundaries; write phased acceptance criteria and unresolved MadMapper choices; inspect links and diff, then commit and push for review.
 - Acceptance: clear current/planned distinction, repeatable field setup, calibration preservation, and no implied implementation or router configuration.
 - Delivery: documented the Slate Plus setup and laptop connection, five implementation slices, field checks, and unresolved MadMapper choices. Documentation/link/diff inspection only; no application code changed.
+- Follow-up: added the exact DOMRAEM listing as the first commercial compatibility target, capability checks, vendor-setting preservation, and recovery/audio acceptance without flashing. Listing access was blocked; selected hardware variant remains unverified.
 
 ## Done (2026-09-06 hardware-confirmed integration)
 
